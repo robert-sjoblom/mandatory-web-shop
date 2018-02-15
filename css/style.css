@@ -1,0 +1,64 @@
+
+body {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+header {
+    height: 100px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background-color: salmon;
+}
+
+header a {
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: -2px;
+    font-size: 4em;
+}
+
+.products {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.product {
+    display: flex;
+    flex-direction: column;
+}
+
+h3 ~ img {
+    width: 200px;
+    height: auto;
+}
+
+.checkout {
+    display: none;
+    grid-template-columns: 50% 50%;
+}
+
+#checkoutForm {
+    display: flex;
+    flex-direction: column;
+    font-size: 2em;
+}
+
+.invalid {
+    border: 2px dashed red;
+}
+
+#submitbutton {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.note {
+    font-size: 1.5em;
+}
+/* input:valid {
+    border: 2px solid black;
+} */
