@@ -99,53 +99,115 @@ function displayCheckout() {
     products.style.display = "none";
     checkout.style.display = "grid";
 }
+
+
 // ----------------------------
 // SUBMIT VALIDATION
 
-document.getElementById("checkoutForm").addEventListener("submit", function(e) {
+
+
+
+const requireds = ["firstname", "lastname", "email", "street", "zip", "city"];
+let inputs = Array.from(document.getElementsByTagName("input"));
+
+
+document.getElementById("checkoutForm").addEventListener("submit", function(e){
     e.preventDefault();
-    if (validate()) {
-        // submit form?
+    console.log(validate());
+    if (!validate()) {
+        inputs.filter(x => requireds.indexOf(x.name) >= 0 ? true : false)
+            .forEach(x => inputValidation(x));
+    } else {
+        // submit
+        console.log("Everything validated!");
     }
 });
 
-function validate() {
-    let form = document.submitForm;
-    
-    if (form.firstname.value == "") {
-        form.firstname.focus();
-        form.firstname.setAttribute("class", "invalid");
-        console.log("Hello World!");
+
+function inputValidation(field) {
+    if (field.value === "") {
+        field.setAttribute("class", "invalid");
         return false;
-    }
-    if (form.lastname.value == "") {
-        form.lastname.focus();
-        form.lastname.setAttribute("class", "invalid");
-        return false;
-    }
-    if (form.email.value == "") {
-        form.email.focus();
-        form.email.setAttribute("class", "invalid");
-        return false;
-    }
-    if (form.street.value == "") {
-        form.street.focus();
-        form.street.setAttribute("class", "invalid");
-        return false;
-    }
-    if (form.zip.value == "") {
-        form.zip.focus();
-        form.zip.setAttribute("class", "invalid");
-        return false;
-    }
-    if (form.city.value == "") {
-        form.city.focus();
-        form.city.setAttribute("class", "invalid");
-        return false;
-    }
-    else {
+    } else {
+        field.removeAttribute("class", "invalid");
         return true;
     }
 }
+
+function validate() {
+    return inputs.filter(x => requireds.indexOf(x.name) >= 0 ? true : false )
+        // .forEach(x => inputValidation(x))
+        .every(x => inputValidation(x));
+}
+
+
+
+// inputs.forEach(x => x.addEventListener("keyup", e => {
+//     if (requireds.indexOf(e.target.name) >= 0 && e.target.value.length < 2) {
+//         e.target.setAttribute("class", "invalid");
+//     } else if (e.target.name === "zip") {
+//         if (e.target.value.length <= 4 || isNaN(e.target.value)) {
+//             e.target.setAttribute("class", "invalid");
+//         } else {
+//             e.target.removeAttribute("class", "invalid");
+//         }
+//     } else {
+//         e.target.removeAttribute("class", "invalid");
+//     }
+// }));
+
+// document.getElementById("checkoutForm").addEventListener("submit", function(e){
+//     e.preventDefault();
+//     if (inputs.some(x => x.classList.contains("invalid") || )) {
+//         console.log("not valid!");
+//     }
+// });
+
+
+// document.getElementById("checkoutForm").addEventListener("submit", function(e) {
+//     e.preventDefault();
+//     if (validate()) {
+//         // submit form?
+//     }
+// });
+
+// function validate() {
+//     let form = document.submitForm;
+    
+//     if (form.firstname.value == "") {
+//         form.firstname.focus();
+//         form.firstname.setAttribute("class", "invalid");
+//         console.log("Hello World!");
+//         return false;
+//     }
+//     if (form.lastname.value == "") {
+//         form.lastname.focus();
+//         form.lastname.setAttribute("class", "invalid");
+//         return false;
+//     }
+//     if (form.email.value == "") {
+//         form.email.focus();
+//         form.email.setAttribute("class", "invalid");
+//         return false;
+//     }
+//     if (form.street.value == "") {
+//         form.street.focus();
+//         form.street.setAttribute("class", "invalid");
+//         return false;
+//     }
+//     if (form.zip.value == "") {
+//         form.zip.focus();
+//         form.zip.setAttribute("class", "invalid");
+//         return false;
+//     }
+//     if (form.city.value == "") {
+//         form.city.focus();
+//         form.city.setAttribute("class", "invalid");
+//         return false;
+//     }
+//     else {
+//         return true;
+//     }
+// }
 
 createPage(products);

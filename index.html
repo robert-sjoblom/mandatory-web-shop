@@ -11,14 +11,14 @@
 
 <body>
     <header>
-        <a href="#" class="nav" onclick="displayProduct()">Products</a>
-        <a href="#" class="nav" onclick="displayCheckout()">Checkout</a>
+        <a href="#" class="nav" data-show="products" onclick="displayProduct()">Products</a>
+        <a href="#" class="nav" data-show="checkout" onclick="displayCheckout()">Checkout</a>
     </header>
     <div id="wrapper">
-        <div id="products" class="products">
+        <div id="products" class="products subpage">
             <!-- This is where our products go -->
         </div>
-        <div id="checkout" class="checkout">
+        <div id="checkout" class="checkout subpage">
             <form id="checkoutForm" name="submitForm">
                 First name*:
                 <br>
