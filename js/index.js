@@ -37,8 +37,7 @@ let products = [
 ];
 const cart = {};
 function createProduct(product) {
-    let html = `
-    <div class="product" id="${product.id}">
+    return `<div class="product" id="${product.id}">
         <h3>${product.name}</h3>
         <img src="${product.url}" alt="image of ${product.name}" class="productImage">
         <div class="price">${product.price}</div>
@@ -46,7 +45,6 @@ function createProduct(product) {
         <button>Add to cart</button>
     </div>
     `;
-    return html;
 }
 function createPage(products) {
     let productDiv = document.getElementById("products");
@@ -62,7 +60,7 @@ function buildCartHTML(cart, products) {
     let items = Object.keys(cart).map(key =>
         products.find(product => product.id === key)
     );
-    return htmlItems = items.map(item => { // eslint-disable-line no-undef
+    return items.map(item => { 
         return `<div data-value="${item.id}">
             <span>${item.name}</span>
             <span>
