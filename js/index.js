@@ -36,17 +36,6 @@ let products = [
     }
 ];
 const cart = {};
-
-function addToCart() {
-    // console.log(this.parentElement.children);
-    if (this.parentElement.id in cart) {
-        cart[this.parentElement.id] += 1;
-    } else {
-        cart[this.parentElement.id] = 1;
-    }
-    update(cart, products);
-}
-
 function createProduct(product) {
     let html = `
     <div class="product" id="${product.id}">
@@ -69,13 +58,10 @@ function createPage(products) {
     Array.from(document.getElementsByTagName("button"))
         .forEach(button => button.addEventListener("click", addToCart));
 }
-
 function buildCartHTML(cart, products) {
     let items = Object.keys(cart).map(key =>
         products.find(product => product.id === key)
     );
-    console.log(items);
-
     return htmlItems = items.map(item => { // eslint-disable-line no-undef
         return `<div data-value="${item.id}">
             <span>${item.name}</span>
@@ -86,7 +72,14 @@ function buildCartHTML(cart, products) {
         `;
     }).join("");
 }
-
+function addToCart() {
+    if (this.parentElement.id in cart) {
+        cart[this.parentElement.id] += 1;
+    } else {
+        cart[this.parentElement.id] = 1;
+    }
+    update(cart, products);
+}
 function modCart(e) {
     let operation = e.target.classList.value.split(" ")[1];
     let productID = e.target.parentElement.parentElement.getAttribute("data-value");
@@ -101,7 +94,6 @@ function modCart(e) {
     }
     update(cart, products);
 }
-
 function update(cart, products) {
     document.getElementById("cartlist").innerHTML = buildCartHTML(cart, products);
     let cartSpan = document.getElementById("cartTotal");
@@ -115,10 +107,11 @@ function update(cart, products) {
         .forEach(elem => elem.addEventListener("click", modCart));
 }
 
+// BEYOND THIS POINT LIVES MONSTERS
 // ----------------------------
 // THIS IS NOT PRETTY BUT IT WORKS OKAY?
 // I DEAL WITH THIS LATER
-function displayProduct() {
+function displayProduct() { // eslint-disable-line no-unused-vars
     let checkout = document.getElementById("checkout");
     let products = document.getElementById("products");
     let cartlist = document.getElementById("cartlist");
@@ -127,20 +120,17 @@ function displayProduct() {
 
     cartlist.style.display = "none";
     cartlist.parentElement.style.justifySelf = "end";
-
 }
-function displayCheckout() {
+function displayCheckout() { // eslint-disable-line no-unused-vars
     let checkout = document.getElementById("checkout");
     let products = document.getElementById("products");
     let cartlist = document.getElementById("cartlist");
-    products.style.display = "none";
+    products.style.display = "none"; 
     checkout.style.display = "flex";
     
     cartlist.style.display = "block";
     cartlist.parentElement.style.justifySelf = "start";
 }
-
-
 // ----------------------------
 // SUBMIT VALIDATION
 const requireds = ["firstname", "lastname", "email", "street", "zip", "city"];
