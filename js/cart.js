@@ -18,43 +18,36 @@ let cart = {
     "3": 1
 };
 
-function removeFromCart(cart) {
-    //what happens when # of items is 0?
-}
 function buildCartHTML(cart, products) {
     let items = Object.keys(cart).map(key =>
         products.find(product => product.id === key)
     );
 
-    return htmlItems = items.map(item => {
+    return htmlItems = items.map(item => { // eslint-disable-line no-undef
         return `
-        <div  data-value="${item.id}">
+        <div data-value="${item.id}">
             <span>${item.name}</span>
             <span>
-                <a href="#" class="add">+</a> AMT: ${cart[item.id]} <a href="#" class="remove">-</a>
+                <a href="#" class="cartMod add">+</a> AMT: ${cart[item.id]} <a href="#" class="cartMod remove">-</a>
             </span>
         </div>    
         `;
     }).join("");
 }
 
+function modCart(e) {
+    let operation = e.target.classList.value.split(" ")[1];
+    let productID = e.target.parentElement.parentElement.getAttribute("data-value");
 
-// refactor to generic function
-// later
-function increaseProduct(e) {
-    let id = e.target.parentElement.parentElement.getAttribute("data-value");
-    cart[id] += 1;
-    update();
-}
-function decreaseProduct(e) {
-    console.log("Goodbye World!");
-    let id = e.target.parentElement.parentElement.getAttribute("data-value");
-    if (cart[id] > 1) {
-        cart[id] -= 1;
+    if (operation === "add") {
+        cart[productID] += 1;
     } else {
-        delete cart[id];
+        if (cart[productID] > 1) {
+            cart[productID] -= 1;
+        } else {
+            delete cart[productID];
+        }
     }
-    
     update();
 }
 
@@ -67,14 +60,8 @@ function update() {
             return sum + cart[key];
         }, 0);
 
-    addListeners();
-}
-
-function addListeners() {
-    Array.from(document.getElementsByClassName("add"))
-        .forEach(elem => elem.addEventListener("click", increaseProduct));
-    Array.from(document.getElementsByClassName("remove"))
-        .forEach(elem => elem.addEventListener("click", decreaseProduct));       
+    Array.from(document.getElementsByClassName("cartMod"))
+        .forEach(elem => elem.addEventListener("click", modCart));   
 }
 
 update();

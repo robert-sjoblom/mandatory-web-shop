@@ -7,6 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
     <link rel="stylesheet" href="css/style.css">
+    <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
 </head>
 
 <body>
@@ -15,88 +16,46 @@
         <a href="#" class="nav" data-show="checkout" onclick="displayCheckout()">Checkout</a>
     </header>
     <div id="wrapper">
+        <div id="cart">
+            <i class="fas fa-shopping-basket"></i>
+            <span id="cartTotal"></span>
+            </p>
+            <div id="cartlist"></div>
+        </div>
         <div id="products" class="products subpage">
             <!-- This is where our products go -->
         </div>
         <div id="checkout" class="checkout subpage">
             <form id="checkoutForm" name="submitForm">
-                First name*:
+                First name:
                 <br>
                 <input type="text" name="firstname" placeholder="First Name">
-                <br> Last name*:
+                <br> Last name:
                 <br>
                 <input type="text" name="lastname" placeholder="Last Name">
-                <br> Email*:
+                <br> Email:
                 <br>
                 <input type="email" name="email" placeholder="email address">
                 <br> Phone Number:
                 <br>
                 <input type="text" name="phonenr" placeholder="phone number">
-                <br> Street Address*:
+                <br> Street Address:
                 <br>
                 <input type="text" name="street" placeholder="Street Address">
-                <br> Zip code*:
+                <br> Zip code:
                 <br>
                 <input type="text" name="zip" placeholder="Zip Code">
-                <br> City*:
+                <br> City:
                 <br>
                 <input type="text" name="city" placeholder="City">
                 <br> Comments:
                 <br>
-                <textarea name="" id="" cols="30" rows="10" placeholder="Please leave a comment."></textarea>
+                <textarea name="" id="" cols="30" rows="4" placeholder="Please leave a comment."></textarea>
                 <input type="submit" value="Submit" id="submitbutton">
             </form>
-            <div class="note">
-                * denotes a required field
-            </div>
         </div>
-        <div id="cart">
-            <p>THIS HERE IS OUR CART</p>
-            <span id="cartTotal"></span>
-        </div>
+
     </div>
-
-
-
-
-    <!-- 
-        * A product page, listing all the products
-        * A checkout page where a customer can enter information about themselves and make
-        an order
-     -->
-
-
-    <!-- 
-         Product page:
-        pages:
-        * A product page, listing all the products
-        * A checkout page where a customer can enter information about themselves and make
-        Use JavaScript to create an array of objects representing the products in your page.
-        Every object should contain the following:
-        * product name
-        * price
-        * description
-        * url to an image
-        List all products using JavaScript on the product page, showing each products name,
-        price, description, and image using the objects.
-    -->
-
-
-
-    <!--
-        Checkout page:
-        The checkout page should contain a form with the following fields:
-        * First name required
-        * Last name required
-        * Email address required
-        * Phone number optional
-        * Street address required
-        * Zip code required
-        * City required
-        * Comments optional - if the customer wishes to add some form of comment to
-        the order
-     -->
-
     <script src="js/index.js"></script>
 </body>
 
