@@ -1,49 +1,70 @@
-
 let products = [
     {
         name: "Caltrops",
         price: "5 sp",
         desc: "Hurts to walk on",
-        url: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/Drevnosti_RG_v3_ill130c_-_Caltrop.jpg/250px-Drevnosti_RG_v3_ill130c_-_Caltrop.jpg"
+        url: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/Drevnosti_RG_v3_ill130c_-_Caltrop.jpg/250px-Drevnosti_RG_v3_ill130c_-_Caltrop.jpg",
+        id: 1
     },
     {
         name: "Bedroll",
         price: "1 gp",
         desc: "To sleep in.",
-        url: "https://images-na.ssl-images-amazon.com/images/I/41inhK8vL5L._SY355_.jpg"
+        url: "https://images-na.ssl-images-amazon.com/images/I/41inhK8vL5L._SY355_.jpg",
+        id: 2
     },
     {
         name: "Block and tackle",
         price: "1 gp",
         desc: "To lift heavy things with.",
-        url: "https://i.ebayimg.com/images/g/p64AAOSwBLlU8XG1/s-l300.jpg"
+        url: "https://i.ebayimg.com/images/g/p64AAOSwBLlU8XG1/s-l300.jpg", 
+        id: 3
     },
     {
         name: "Book, blank",
         price: "5 gp",
         desc: "To write or draw in, for the aspiring mage.",
-        url: "https://cdn.instructables.com/FZQ/Y2M0/I9FGT1YD/FZQY2M0I9FGT1YD.LARGE.jpg"
+        url: "https://cdn.instructables.com/FZQ/Y2M0/I9FGT1YD/FZQY2M0I9FGT1YD.LARGE.jpg",
+        id: 4
     },
     {
         name: "Book, reading",
         price: "10 gp",
         desc: "A steamy novel, for those lonely nights.",
-        url: "http://www.worldoflongmire.com/features/romance_novels/love_bum.jpg"
+        url: "http://www.worldoflongmire.com/features/romance_novels/love_bum.jpg",
+        id: 5
     }
 ];
+const cart = {};
 
-/*
-better to write a generic function, like so:
-function tagWriter(type, cls, content) {
-    let x = document.createElement(type);
-    x.setAttribute("class", cls);
-    x.innerText = content;
+function addToCart() {
+    // console.log(this.parentElement.children);
+    
+    if (this.parentElement.id in cart) {
+        cart[this.parentElement.id] += 1;
+    } else {
+        cart[this.parentElement.id] = 1;
+    }
+    
+    //cart[this.parentElement.id] = 1;
+    console.log(cart);
+    //add product to hash
+    //
+    //for key in cart
+    // if key
+    //   cart[key] += 1
+    // if not key
+    // cart[key] = 1
+    // {
+    //     "1" : 1,
+    //     "3" : 2,
+
+    // }
 }
-perhaps
-*/
 
 function title(name) {
     let title = document.createElement("h3");
+    title.setAttribute("class", "title");
     title.innerText = name;
     return title;
 }
@@ -66,11 +87,17 @@ function createProduct(product) {
     let img = document.createElement("img");
     img.setAttribute("src", product.url);
 
+    div.setAttribute("id", product.id);
     div.appendChild(title(product.name));
     div.appendChild(img);
 
     div.appendChild(createDiv("price", product.price));
     div.appendChild(createDiv("description", product.desc));
+    
+    let button = document.createElement("button");
+    button.innerText = "+";
+    button.addEventListener("click", addToCart);
+    div.appendChild(button);
 
     return div;
 }
@@ -103,13 +130,8 @@ function displayCheckout() {
 
 // ----------------------------
 // SUBMIT VALIDATION
-
-
-
-
 const requireds = ["firstname", "lastname", "email", "street", "zip", "city"];
 let inputs = Array.from(document.getElementsByTagName("input"));
-
 
 document.getElementById("checkoutForm").addEventListener("submit", function(e){
     e.preventDefault();
@@ -122,7 +144,6 @@ document.getElementById("checkoutForm").addEventListener("submit", function(e){
         console.log("Everything validated!");
     }
 });
-
 
 function inputValidation(field) {
     if (field.value === "") {
@@ -139,75 +160,5 @@ function validate() {
         // .forEach(x => inputValidation(x))
         .every(x => inputValidation(x));
 }
-
-
-
-// inputs.forEach(x => x.addEventListener("keyup", e => {
-//     if (requireds.indexOf(e.target.name) >= 0 && e.target.value.length < 2) {
-//         e.target.setAttribute("class", "invalid");
-//     } else if (e.target.name === "zip") {
-//         if (e.target.value.length <= 4 || isNaN(e.target.value)) {
-//             e.target.setAttribute("class", "invalid");
-//         } else {
-//             e.target.removeAttribute("class", "invalid");
-//         }
-//     } else {
-//         e.target.removeAttribute("class", "invalid");
-//     }
-// }));
-
-// document.getElementById("checkoutForm").addEventListener("submit", function(e){
-//     e.preventDefault();
-//     if (inputs.some(x => x.classList.contains("invalid") || )) {
-//         console.log("not valid!");
-//     }
-// });
-
-
-// document.getElementById("checkoutForm").addEventListener("submit", function(e) {
-//     e.preventDefault();
-//     if (validate()) {
-//         // submit form?
-//     }
-// });
-
-// function validate() {
-//     let form = document.submitForm;
-    
-//     if (form.firstname.value == "") {
-//         form.firstname.focus();
-//         form.firstname.setAttribute("class", "invalid");
-//         console.log("Hello World!");
-//         return false;
-//     }
-//     if (form.lastname.value == "") {
-//         form.lastname.focus();
-//         form.lastname.setAttribute("class", "invalid");
-//         return false;
-//     }
-//     if (form.email.value == "") {
-//         form.email.focus();
-//         form.email.setAttribute("class", "invalid");
-//         return false;
-//     }
-//     if (form.street.value == "") {
-//         form.street.focus();
-//         form.street.setAttribute("class", "invalid");
-//         return false;
-//     }
-//     if (form.zip.value == "") {
-//         form.zip.focus();
-//         form.zip.setAttribute("class", "invalid");
-//         return false;
-//     }
-//     if (form.city.value == "") {
-//         form.city.focus();
-//         form.city.setAttribute("class", "invalid");
-//         return false;
-//     }
-//     else {
-//         return true;
-//     }
-// }
 
 createPage(products);
