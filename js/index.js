@@ -18,11 +18,7 @@ function createProduct(product) {
     `;
 }
 
-
-
 function clickHandler(e) {
-    // console.log(e.target);
-
     if (e.target.hasAttribute("data-functionality")) {
         if (e.target.getAttribute("data-functionality") === "productButton") {
             addToCart(e);
@@ -52,6 +48,7 @@ function createPage(products) {
 
     document.addEventListener("click", clickHandler);
 }
+
 function buildCartHTML(cart, products) {
     let items = Object.keys(cart).map(key =>
         products.find(product => product.id === key)
@@ -77,6 +74,7 @@ function addToCart(e) {
 }
 
 function update(cart, products) {
+    // noinspection SpellCheckingInspection
     document.getElementById("cartlist").innerHTML = buildCartHTML(cart, products);
     let cartSpan = document.getElementById("cartTotal");
 
@@ -93,6 +91,8 @@ function update(cart, products) {
 function displayProduct() { // eslint-disable-line no-unused-vars
     let checkout = document.getElementById("checkout");
     let products = document.getElementById("products");
+    // noinspection SpellCheckingInspection
+    // noinspection SpellCheckingInspection
     let cartlist = document.getElementById("cartlist");
     checkout.style.display = "none";
     products.style.display = "grid";
@@ -100,9 +100,12 @@ function displayProduct() { // eslint-disable-line no-unused-vars
     cartlist.style.display = "none";
     cartlist.parentElement.style.justifySelf = "end";
 }
+// noinspection SpellCheckingInspection
 function displayCheckout() { // eslint-disable-line no-unused-vars
     let checkout = document.getElementById("checkout");
     let products = document.getElementById("products");
+    // noinspection SpellCheckingInspection
+    // noinspection SpellCheckingInspection
     let cartlist = document.getElementById("cartlist");
     products.style.display = "none"; 
     checkout.style.display = "flex";
