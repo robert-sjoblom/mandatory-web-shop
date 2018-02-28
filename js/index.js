@@ -1,4 +1,3 @@
-// next refactoring, event delegation on document.
 let products = [
     { name: "Caltrops", price: "5 sp", desc: "Hurts to walk on", url: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/Drevnosti_RG_v3_ill130c_-_Caltrop.jpg/250px-Drevnosti_RG_v3_ill130c_-_Caltrop.jpg", id: "1" }, 
     { name: "Bedroll", price: "1 gp", desc: "To sleep in.", url: "https://images-na.ssl-images-amazon.com/images/I/41inhK8vL5L._SY355_.jpg", id: "2" }, 
@@ -14,22 +13,36 @@ function createProduct(product) {
         <div class="price">${product.price}</div>
         <div class="description">${product.desc}</div>
         <button data-functionality="productButton">Add to cart</button>
-    </div>
-    `;
+    </div>`;
 }
 
-function clickHandler(e) {
-    if (e.target.hasAttribute("data-functionality")) {
-        if (e.target.getAttribute("data-functionality") === "productButton") {
-            addToCart(e);
-        } else if ( e.target.getAttribute("data-functionality") === "cart" ) {
-            modCart(e);
-        }
-    }
+function buildCartHTML(cart, products) {
+    let items = Object.keys(cart).map(key =>
+        products.find(product => product.id === key)
+    );
+    return items.map(item => { 
+        return `<div data-value="${item.id}" class="cart-item">
+            <span>${item.name}</span>
+            <span>
+                <a href="#" data-functionality="cart" class="cartMod add">+</a> ${cart[item.id]} <a href="#" data-functionality="cart" class="cartMod remove">-</a>
+            </span>
+        </div>`;
+    }).join("");
 }
+
+function addToCart(e) {
+    e.stopPropagation();
+    if (e.target.parentElement.id in cart) {
+        cart[e.target.parentElement.id] += 1;
+    } else {
+        cart[e.target.parentElement.id] = 1;
+    }
+    update(cart, products);
+}
+
 function modCart(e) {
-    let productID = e.target.parentElement.parentElement.getAttribute("data-value");
-    if (e.target.classList.contains("add")) {
+    let productID = $(e.target).closest("div").attr("data-value");
+    if ($(e.target).hasClass("add")) {
         cart[productID] += 1;
     } else {
         if (cart[productID] > 1) {
@@ -41,92 +54,63 @@ function modCart(e) {
     update(cart, products);
 }
 
-function createPage(products) {
-    let productDiv = document.getElementById("products");
-    productDiv.innerHTML = products.map(element => createProduct(element))
-        .join("");
-
-    document.addEventListener("click", clickHandler);
-}
-
-function buildCartHTML(cart, products) {
-    let items = Object.keys(cart).map(key =>
-        products.find(product => product.id === key)
-    );
-    return items.map(item => { 
-        return `<div data-value="${item.id}">
-            <span>${item.name}</span>
-            <span>
-                <a href="#" data-functionality="cart" class="cartMod add">+</a> ${cart[item.id]} <a href="#" data-functionality="cart" class="cartMod remove">-</a>
-            </span>
-        </div>    
-        `;
-    }).join("");
-}
-
-function addToCart(e) {
-    if (e.target.parentElement.id in cart) {
-        cart[e.target.parentElement.id] += 1;
-    } else {
-        cart[e.target.parentElement.id] = 1;
-    }
-    update(cart, products);
-}
-
 function update(cart, products) {
-    // noinspection SpellCheckingInspection
-    document.getElementById("cartlist").innerHTML = buildCartHTML(cart, products);
-    let cartSpan = document.getElementById("cartTotal");
-
-    cartSpan.innerText = Object.keys(cart).
+    $("#cartlist").html(buildCartHTML(cart, products));
+    $("#cartTotal").text(Object.keys(cart).
         reduce(function (sum, key) {
             return sum + cart[key];
-        }, 0);
+        }, 0));
+}
+
+function clickHandler(e) {
+    if (e.target.hasAttribute("data-functionality")) {
+        if (e.target.getAttribute("data-functionality") === "productButton") {
+            addToCart(e);
+        } else if ( e.target.getAttribute("data-functionality") === "cart" ) {
+            modCart(e);
+        }
+    }
+}
+
+function createPage(products) {
+    $("#products").append(products.map(element => createProduct(element))
+        .join(""));
+    $(document).on("click", ".product", productClick);
+    $(document).on("click", 'button[data-functionality="productButton"]', addToCart); //eslint-disable-line
+    $(document).on("click", "a[data-functionality]", modCart);
 }
 
 // BEYOND THIS POINT LIVES MONSTERS
-// ----------------------------
-// THIS IS NOT PRETTY BUT IT WORKS OKAY?
-// I DEAL WITH THIS LATER
-function displayProduct() { // eslint-disable-line no-unused-vars
-    let checkout = document.getElementById("checkout");
-    let products = document.getElementById("products");
-    // noinspection SpellCheckingInspection
-    // noinspection SpellCheckingInspection
-    let cartlist = document.getElementById("cartlist");
-    checkout.style.display = "none";
-    products.style.display = "grid";
+$("#showProducts").on("click", function() {
+    $("#products").show();
+    $("#checkout").hide();
+    $("#cartlist").hide();
+});
+$("#showCheckout").on("click", function() {
+    $("#products").hide();
+    $("#checkout").show();
+    $("#cartlist").show().css("display", "flex");
+});
 
-    cartlist.style.display = "none";
-    cartlist.parentElement.style.justifySelf = "end";
-}
-// noinspection SpellCheckingInspection
-function displayCheckout() { // eslint-disable-line no-unused-vars
-    let checkout = document.getElementById("checkout");
-    let products = document.getElementById("products");
-    // noinspection SpellCheckingInspection
-    // noinspection SpellCheckingInspection
-    let cartlist = document.getElementById("cartlist");
-    products.style.display = "none"; 
-    checkout.style.display = "flex";
-    
-    cartlist.style.display = "block";
-    cartlist.parentElement.style.justifySelf = "start";
-}
-// ----------------------------
 // SUBMIT VALIDATION
-const requireds = ["firstname", "lastname", "email", "street", "zip", "city"];
-let inputs = Array.from(document.getElementsByTagName("input"));
-
-document.getElementById("checkoutForm").addEventListener("submit", function (e) {
+$("#checkoutForm").on("submit", function(e) {
     e.preventDefault();
+
+    //These are the required fields
+    let requiredInputs = Array.from($("input"))
+        .filter(x => ["firstname", "lastname", "email", "street", "zip", "city"]
+            .indexOf(x.name) >= 0);
     if (!validate()) {
-        inputs.filter(x => requireds.indexOf(x.name) >= 0)
-            .forEach(x => inputValidation(x));
+        requiredInputs.forEach(x => inputValidation(x));
     } else {
-        // submit
+        //submit
+    }
+
+    function validate() {
+        return requiredInputs.every(x => inputValidation(x));
     }
 });
+
 function inputValidation(field) {
     if (field.value === "") {
         field.setAttribute("class", "invalid");
@@ -136,8 +120,5 @@ function inputValidation(field) {
         return true;
     }
 }
-function validate() {
-    return inputs.filter(x => requireds.indexOf(x.name) >= 0)
-        .every(x => inputValidation(x));
-}
+
 createPage(products);

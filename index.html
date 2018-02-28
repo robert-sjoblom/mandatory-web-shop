@@ -12,15 +12,15 @@
 
 <body>
     <header>
-        <a href="#" class="nav" data-show="products" onclick="displayProduct()">Products</a>
-        <a href="#" class="nav" data-show="checkout" onclick="displayCheckout()">Checkout</a>
+        <a href="#" class="nav" id="showProducts" data-show="products">Products</a>
+        <a href="#" class="nav" id="showCheckout" data-show="checkout">Checkout</a>
     </header>
     <div id="wrapper">
+        <div id="overlay"></div>
         <div id="cart">
-            <p>
             <i class="fas fa-shopping-basket"></i>
             <span id="cartTotal"></span>
-            </p>
+
             <div id="cartlist"></div>
         </div>
         <div id="products" class="products subpage">
@@ -57,6 +57,10 @@
         </div>
 
     </div>
+    <script
+            src="https://code.jquery.com/jquery-3.3.1.min.js"
+            integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+            crossorigin="anonymous"></script>
     <script src="js/index.js"></script>
 </body>
 
