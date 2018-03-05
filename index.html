@@ -57,10 +57,50 @@
         </div>
 
     </div>
-    <script
-            src="https://code.jquery.com/jquery-3.3.1.min.js"
-            integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.11/handlebars.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
+
+    <script id="product-template" type="text/x-handlebars-template">
+        <div class="product" data-value="{{id}}">
+            <h3>{{name}}</h3>
+            <img src="{{url}}" alt="image of {{name}}" class="productImage">
+            <div class="price">{{price}}</div>
+            <div class="description">{{desc}}</div>
+            <button data-functionality="productButton">Add to cart</button>
+        </div>
+    </script>
+    <script id="review-template" type="text/x-handlebars-template">
+        <div class="leaveReview">
+            <fieldset>
+                <legend>Leave a review</legend>
+                <form id="review" name="reviewForm">
+                    Name: <input type="text" name="name" placeholder="Name" style="display: inline-block">
+                    Title: <input type="text" name="title" placeholder="Title" style="display: inline-block">
+                    <br>
+                    Rating: 
+                    <select name="rating">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                    <br>
+                    Review: <textarea name="userReview" cols="20" rows="4" placeholder="Please leave a review."></textarea>
+                    <button>Submit</button>
+                </form>
+            </fieldset>
+        </div>
+    </script>
+    <script id="cart-item-template" type="text/x-handlebars-template">
+        <div data-value="{{id}}" class="cart-item">
+            <span>{{name}}</span>
+            <span>
+                <a href="#" data-functionality="cart" class="cartMod add">+</a> {{cartITEM}} <a href="#" data-functionality="cart" class="cartMod remove">-</a>
+            </span>
+        </div>
+    </script>
     <script src="js/index.js"></script>
 </body>
 
