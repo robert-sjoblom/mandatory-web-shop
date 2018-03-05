@@ -158,13 +158,12 @@ button {
     justify-self: end;
 }
 
-#overlay .product img {
+#overlay .product .productImage {
     grid-column: 1/2;
     grid-row: 1/3;
 
-    width: 100%;
-    height: auto;
-    align-self: center;
+    width: auto;
+    height: 100%;
   }
 
 #reviewContainer {
@@ -193,9 +192,5 @@ button {
 }
 
 .leaveReview {
-    margin-left: 10px;
-}
-
-#overlay input {
-    margin-bottom: 5px;
+    margin-top: 5px;
 }

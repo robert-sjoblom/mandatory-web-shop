@@ -21,9 +21,6 @@ function modCart(e) {
     null;
 }
 
-function closeOverlay() {
-    $("#overlay").empty().hide("slow");
-}
 
 function productClick(e) {
     let id = $(e.target).closest(".product")[0].id;
