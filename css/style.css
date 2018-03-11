@@ -92,6 +92,15 @@ button {
     justify-self: end;
     font-size: 2em;
 }
+#cart span {
+    font-size: 14px;
+}
+
+#closeOverlay {
+    width: 100px;
+    height: 100px;
+}
+
 #cartlist {
     display: none;
     width: 100%;
@@ -100,6 +109,7 @@ button {
 #cartlist a {
     text-decoration: none;
     color: red;
+    font-size: 16px;
 }
 
 .cart-item {
@@ -193,4 +203,9 @@ button {
 
 .leaveReview {
     margin-top: 5px;
+}
+
+#reviewContainer {
+    overflow-y: scroll;
+    overflow-x: hidden;
 }

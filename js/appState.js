@@ -5,4 +5,4 @@ appState.set("templates", {
     cartItemTemplate: Handlebars.compile($("#cart-item-template").html())
 }).set(
     "cart", {}
-);
+); 
