@@ -1,4 +1,3 @@
-// Initialize page w/ HTML
 (async () => {
     const res = await fetch("http://demo.edument.se/api/products");
     const data = await res.json();
@@ -9,17 +8,13 @@
         const { Id, Name, Image, Price, Description } = element;
         return appState.get("templates")["productTemplate"]({ id: Id, name: Name, url: Image, price: Price, desc: Description });
     }).join(""));
-
-    //console.log(appState.get("products"));
     App(appState);
 })()
 
 
 function App(appState) {
-    // hook up listeners
     initListeners();
-    // fetch reviews after we have listeners
-    fetchReviews()  
+    fetchReviews()
 }
 function initListeners() {
     $(document).on("click", ".product", openProduct);
@@ -74,18 +69,16 @@ function updateCart(cart) {
 function addToCart(e) {
     e.stopPropagation()
     cart = appState.get("cart");
+    const productID = $(this).closest("div").attr("data-value") || $(this).closest(".product").attr("data-value");
     if ($(this).hasClass("add")) {
-        const productID = $(this).closest("div").attr("data-value");
         cart[productID] += 1;
     } else if ($(this).hasClass("remove")) {
-        const productID = $(this).closest("div").attr("data-value");
         if (cart[productID] > 1) {
             cart[productID] -= 1;
         } else {
             delete cart[productID];
         }
     } else {
-        const productID = $(this).closest(".product").attr("data-value");
         const productName = $(this).closest(".product").attr("data-value-name");
         if (productID in cart) {
             cart[productID] += 1;
@@ -100,11 +93,9 @@ function addToCart(e) {
 function openProduct(e) {
     const productID = $(this).closest(".product").attr("data-value");
     const productDiv = $(this).closest(".product");
-
     // show overlay
     $("#overlay").show("slow").css("display", "grid");
     buildOverlayHTML(productID, productDiv);
-
     // hook up event listeners
     $("#closeOverlay").on("click", function () {
         $("#overlay").empty().hide("slow");
@@ -123,14 +114,11 @@ function buildOverlayHTML(productID, productDiv) {
             appState.get("templates")["reviewTemplate"]()
         )
         .append(`<button id="closeOverlay">Leave product view</button>`);
-    // close overlay
-
     buildReviews(productID);
 }
 
 function buildReviews(productID) {
     const reviews = appState.get("reviews").filter(item => item["ProductID"] === Number(productID));
-    console.log(reviews);
     $("#reviewContainer").empty().append(
         reviews.map(rev => buildReviewEntry(rev)).join("")
     );
@@ -143,7 +131,6 @@ function buildReviewEntry(review) {
     }
     star.push("</div>");
 
-    //<h4>${review.title}</h4>
     return `<div class="review">
     <div>${review["Comment"]}
         <p><span class="author">${review["Name"]}</span></p>
@@ -162,13 +149,9 @@ function postReview(e) {
             $(this).val("");
         }
     });
-    // ugly hack
     $review["Rating"] = Number($review["Rating"]);
-    // add ProductID
     $review["ProductID"] = Number($("#overlay .product").attr("data-value"));
-    console.log($review);
-    
-    // submit review
+
     fetch("http://demo.edument.se/api/reviews", {
         method: "POST",
         body: JSON.stringify($review),
@@ -176,10 +159,36 @@ function postReview(e) {
             "Content-Type": "application/json"
         })
     }).then(() => {
-        // just show local changes
         $("#reviewContainer").append(buildReviewEntry($review));
     }).then(() => {
         // update local reviews
         fetchReviews()
+    });
+}
+
+function submitOrder() {
+    const $order = {};
+    $("#checkoutForm :input, #checkoutForm textarea").each(function () {
+        if ($(this).val() !== "Submit") {
+            $order[this.name] = $(this).val();
+        }
+    });
+    let OrderItems = Object.keys(cart).map(item => {
+        let productId = Number(item);
+        let product = appState.get("products").find(item => item.Id === productId);
+        let orders = [];
+        for (let i = 0; i < cart[item]; i++) {
+            orders.push(product);
+        }
+        return orders;
+    }).reduce((a, b) => a.concat(b));
+    $order["OrderItems"] = OrderItems;
+    
+    fetch("http://demo.edument.se/api/orders", {
+        method: "POST",
+        body: JSON.stringify($order),
+        headers: new Headers({
+            "Content-Type": "application/json"
+        })
     });
 }
